@@ -1,0 +1,21 @@
+{% extends 'mailing/base.html' %}
+{% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Информация о клиенте</h1>
+    </div>
+    <div class="card">
+        <div class="card-header">{{ object.email }}</div>
+        <div class="card-body">
+            <h5 class="card-title">{{ object.full_name }}</h5>
+            <p class="card-text">{{ object.commentary | default:"Комментарий отсутствует" }}.</p>
+            <a href="{% url 'mailing:recipient_update' object.id %}" class="btn btn-primary">Изменить данные</a>
+            <a href="{% url 'mailing:recipient_delete' object.id %}" class="btn btn-danger">Удалить</a>
+        </div>
+        <a href="{% url 'mailing:recipient_list' %}" class="list-group-item list-group-item-action">
+            <div class="card-footer text-muted">Вернуться к списку клиентов</div>
+        </a>
+    </div>
+</main>
+
+{% endblock %}
