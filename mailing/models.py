@@ -5,9 +5,9 @@ class MailingRecipient(models.Model):
     """Класс получателя рассылки"""
 
     email = models.EmailField(
-        unique=True, help_text="email получателя рассылки", verbose_name="email получателя рассылки"
+        unique=True, verbose_name="email получателя рассылки"
     )
-    full_name = models.CharField(max_length=150, verbose_name="Ф.И.О. получателя", help_text="Ф.И.О. получателя")
+    full_name = models.CharField(max_length=150, verbose_name="Ф.И.О. получателя")
     commentary = models.TextField(verbose_name="Комментарий о получателе рассылки", blank=True, null=True)
 
     def __str__(self):
@@ -23,9 +23,17 @@ class MailingRecipient(models.Model):
 class Message(models.Model):
     """Класс объекта 'сообщение'"""
 
-    subject = models.CharField(max_length=150, verbose_name="Тема сообщения", help_text="Тема")
-    message = models.TextField(verbose_name="Тескт сообщения", help_text="Тескт сообщения")
+    subject = models.CharField(max_length=150, verbose_name="Тема сообщения")
+    message = models.TextField(verbose_name="Тескт сообщения")
 
+    def __str__(self):
+        """Строковое представление сообщения"""
+        return f"{self.subject}"
+
+    class Meta:
+        verbose_name = "Сообщение"
+        verbose_name_plural = "Сообщения"
+        ordering = ["subject"]
 
 class Mailing(models.Model):
     """Класс объекта 'рассылка'"""
@@ -41,3 +49,12 @@ class Mailing(models.Model):
     recipients = models.ManyToManyField(
         MailingRecipient, verbose_name="Получатели рассылки", related_name="recipients"
     )
+
+    def __str__(self):
+        """Строковое представление рассылки"""
+        return f"{self.message} статус рассылки {self.status}"
+
+    class Meta:
+        verbose_name = "Рассылка"
+        verbose_name_plural = "Рассылки"
+        ordering = ["status"]
