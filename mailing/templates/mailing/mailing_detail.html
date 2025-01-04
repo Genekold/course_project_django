@@ -9,6 +9,11 @@
         <div class="card-body">
             <p class="card-text">Дата и время начала рассылки: {{ object.start_date }}.</p>
             <p class="card-text">Дата и время окончания рассылки: {{ object.end_date }}.</p>
+            <p class="card-text">Тема сообщнеия: {{ object.message }}.</p>
+            <p class="card-text">Получатели раасыки:</p>
+            {% for recipient in recipients %}
+            <p class="card-text">{{ recipient }}</p>
+            {% endfor %}
             <a href="{% url 'mailing:mailing_update' object.id %}" class="btn btn-primary">Изменить данные</a>
             <a href="{% url 'mailing:mailing_delete' object.id %}" class="btn btn-danger">Удалить</a>
         </div>

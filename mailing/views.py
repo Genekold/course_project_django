@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
@@ -80,6 +81,15 @@ class MailingDetailView(DetailView):
     """Класс детального представления рассылки"""
     model = Mailing
 
+    def get_context_data(self, **kwargs):
+        recipients = MailingRecipient.objects.all()
+        context = super().get_context_data(**kwargs)
+        for recipient in recipients:
+            print(recipient)
+
+        context['recipients'] = recipients
+        return context
+
 
 class MailingCreateView(CreateView):
     """Класс создания рассылки"""
@@ -102,3 +112,7 @@ class MailingDeleteView(DeleteView):
     """Класс удаления рассылки"""
     model = Mailing
     success_url = reverse_lazy("mailing:mailing_list")
+
+
+def home(request):
+    return render(request, 'mailing/base.html')
