@@ -35,6 +35,7 @@ class Message(models.Model):
         verbose_name_plural = "Сообщения"
         ordering = ["subject"]
 
+
 class Mailing(models.Model):
     """Класс объекта 'рассылка'"""
 

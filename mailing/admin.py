@@ -15,4 +15,3 @@ class MessageAdmin(admin.ModelAdmin):
 @admin.register(Mailing)
 class MailingAdmin(admin.ModelAdmin):
     list_display = ('id', 'start_date', 'end_date', 'status', 'message')
-

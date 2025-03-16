@@ -1,3 +1,14 @@
-from django.test import TestCase
+def divade(x, y):
+    if y == 0:
+        raise ValueError('Not')
+    return x / y
 
-# Create your tests here.
+
+
+if __name__ == '__main__':
+    x = int(input('x = '))
+    y = int(input('y = '))
+    try:
+        print(divade(x, y))
+    except ValueError as e:
+        print(e)
