@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
@@ -82,10 +82,9 @@ class MailingDetailView(DetailView):
     model = Mailing
 
     def get_context_data(self, **kwargs):
-        recipients = MailingRecipient.objects.all()
+        mailing = Mailing.objects.get(pk=self.object.pk)
+        recipients = mailing.recipients.all()
         context = super().get_context_data(**kwargs)
-        for recipient in recipients:
-            print(recipient)
 
         context['recipients'] = recipients
         return context
