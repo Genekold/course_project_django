@@ -24,7 +24,6 @@ class Command(BaseCommand):
             text = mailing.message.message
             recipients = [rec.email for rec in mailing.recipients.all()]
             send_mail(subject=subject, message=text, recipient_list=recipients, from_email=DEFAULT_FROM_EMAIL)
-            print("Сообщение отправлено")
         else:
             print('Нет такой рассылки')
 
