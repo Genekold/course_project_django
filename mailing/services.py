@@ -8,7 +8,7 @@ from .models import Mailing, MailingRecipient, MailingAttempt, Message
 
 class MailingService:
 
-    @ staticmethod
+    @staticmethod
     def send_mail(mailing_pk):
         """метод для отправки сообщений"""
 
@@ -29,3 +29,6 @@ class MailingService:
                 message_server = f'Собщение клиненту {recipient} не отправлено. Ошибка {str(e)}'
                 MailingAttempt.objects.create(status='Не успешно', server_response=message_server, mailing=mailing)
                 print(e)
+    @staticmethod
+    def get_mailing():
+        pass
