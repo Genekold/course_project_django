@@ -1,4 +1,5 @@
 {% extends 'mailing/base.html' %}
+{% load mailing_tags %}
 {% block content %}
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -12,7 +13,7 @@
                     <div class="fw-bold">{{ recipient.email }}</div>
                     <div>{{ recipient.full_name }}</div>
                 </div>
-                <span class="badge bg-primary rounded-pill text-end">14</span>
+                <span class="badge bg-primary rounded-pill text-end">Количество рассылок: {% get_mailing recipient.pk %}</span>
             </a>
         </li>
         {% endfor %}
