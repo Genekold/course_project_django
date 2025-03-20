@@ -1,0 +1,89 @@
+[
+  {
+    "model": "mailing.mailing",
+    "pk": 1,
+    "fields": {
+      "start_date": "2025-03-22T07:04:00Z",
+      "end_date": "2025-05-01T07:10:00Z",
+      "status": "Запущена",
+      "message": 4,
+      "recipients": [
+        6
+      ]
+    }
+  },
+  {
+    "model": "mailing.mailing",
+    "pk": 2,
+    "fields": {
+      "start_date": "2025-03-20T07:00:00Z",
+      "end_date": "2025-04-24T07:00:00Z",
+      "status": "Создана",
+      "message": 6,
+      "recipients": [
+        6,
+        2
+      ]
+    }
+  },
+  {
+    "model": "mailing.mailing",
+    "pk": 3,
+    "fields": {
+      "start_date": "2025-03-21T07:12:00Z",
+      "end_date": "2025-06-20T07:00:00Z",
+      "status": "Завершена",
+      "message": 1,
+      "recipients": [
+        6,
+        2,
+        5,
+        3,
+        4
+      ]
+    }
+  },
+  {
+    "model": "mailing.mailing",
+    "pk": 4,
+    "fields": {
+      "start_date": "2025-03-25T07:00:00Z",
+      "end_date": "2025-05-29T07:00:00Z",
+      "status": "Запущена",
+      "message": 5,
+      "recipients": [
+        2,
+        3,
+        4
+      ]
+    }
+  },
+  {
+    "model": "mailing.mailing",
+    "pk": 5,
+    "fields": {
+      "start_date": "2025-03-01T07:01:00Z",
+      "end_date": "2025-07-24T07:00:00Z",
+      "status": "Запущена",
+      "message": 2,
+      "recipients": [
+        2,
+        5,
+        3
+      ]
+    }
+  },
+  {
+    "model": "mailing.mailing",
+    "pk": 6,
+    "fields": {
+      "start_date": "2025-06-24T07:00:00Z",
+      "end_date": "2025-04-25T07:00:00Z",
+      "status": "Запущена",
+      "message": 3,
+      "recipients": [
+        5
+      ]
+    }
+  }
+]

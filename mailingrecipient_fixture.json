@@ -1,0 +1,47 @@
+[
+  {
+    "model": "mailing.mailingrecipient",
+    "pk": 2,
+    "fields": {
+      "email": "recipient.1@mail.ru",
+      "full_name": "Иванов Иван Иванович",
+      "commentary": "Компания \"АБВ\""
+    }
+  },
+  {
+    "model": "mailing.mailingrecipient",
+    "pk": 3,
+    "fields": {
+      "email": "recipient.2@mail.ru",
+      "full_name": "Сергеев Сергей Сергеевич",
+      "commentary": "Компания \"ГДЕ\""
+    }
+  },
+  {
+    "model": "mailing.mailingrecipient",
+    "pk": 4,
+    "fields": {
+      "email": "recipient.3@mail.ru",
+      "full_name": "Сидоров Сидор Сидорович",
+      "commentary": "Компания \"ЖЗИ\""
+    }
+  },
+  {
+    "model": "mailing.mailingrecipient",
+    "pk": 5,
+    "fields": {
+      "email": "recipient.4@mail.ru",
+      "full_name": "Петров Петр Петрович",
+      "commentary": "Компания \"КЛМ\""
+    }
+  },
+  {
+    "model": "mailing.mailingrecipient",
+    "pk": 6,
+    "fields": {
+      "email": "recipient.5@mail.ru",
+      "full_name": "Алексеев Алексей Алексеевич",
+      "commentary": "Компания \"ОПР\""
+    }
+  }
+]
