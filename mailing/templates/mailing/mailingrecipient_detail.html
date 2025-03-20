@@ -5,16 +5,31 @@
         <h1 class="h2">Информация о клиенте</h1>
     </div>
     <div class="card">
+
+
         <div class="card-header">{{ object.email }}</div>
         <div class="card-body">
-            <h5 class="card-title">{{ object.full_name }}</h5>
-            <p class="card-text">{{ object.commentary | default:"Комментарий отсутствует" }}.</p>
-            <a href="{% url 'mailing:recipient_update' object.id %}" class="btn btn-primary">Изменить данные</a>
-            <a href="{% url 'mailing:recipient_delete' object.id %}" class="btn btn-danger">Удалить</a>
+            <div class="row">
+                <div class="col-6">
+                    <h5 class="card-title">{{ object.full_name }}</h5>
+                    <p class="card-text">{{ object.commentary | default:"Комментарий отсутствует" }}.</p>
+                    <a href="{% url 'mailing:recipient_update' object.id %}" class="btn btn-primary">Изменить данные</a>
+                    <a href="{% url 'mailing:recipient_delete' object.id %}" class="btn btn-danger">Удалить</a>
+                </div>
+                <div class="col-6">
+                    <h5>Список рассылки</h5>
+                    <ul class="list-group">
+                        {% for mailing in mailings %}
+                        <li class="list-group-item">{{ mailing }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
         <a href="{% url 'mailing:recipient_list' %}" class="list-group-item list-group-item-action">
             <div class="card-footer text-muted">Вернуться к списку клиентов</div>
         </a>
+
     </div>
 </main>
 

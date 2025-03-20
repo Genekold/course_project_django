@@ -16,6 +16,14 @@ class MailingRecipientDetailView(DetailView):
     """Класс детального представления одного получателя"""
     model = MailingRecipient
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        recipient = MailingRecipient.objects.filter(pk=self.object.pk)
+        mailings = recipient[0].recipients.all()
+        context['mailings'] = mailings
+        return context
+
+
 
 class MailingRecipientCreateView(CreateView):
     """Класс создания получателя"""
