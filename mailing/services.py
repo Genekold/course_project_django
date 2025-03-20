@@ -29,6 +29,15 @@ class MailingService:
                 message_server = f'Собщение клиненту {recipient} не отправлено. Ошибка {str(e)}'
                 MailingAttempt.objects.create(status='Не успешно', server_response=message_server, mailing=mailing)
                 print(e)
+
     @staticmethod
     def get_mailing():
-        pass
+        return Mailing.objects.all()
+
+    @staticmethod
+    def get_mailing_active():
+        return Mailing.objects.filter(status='Запущена')
+
+    @staticmethod
+    def get_recipient():
+        return MailingRecipient.objects.all()
