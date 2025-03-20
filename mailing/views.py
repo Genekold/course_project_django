@@ -4,6 +4,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 
 from mailing.forms import MailingRecipientForm, MessageForm, MailingForm
 from mailing.models import MailingRecipient, Message, Mailing
+from mailing.services import MailingService
 
 
 class MailingRecipientListView(ListView):
@@ -113,5 +114,13 @@ class MailingDeleteView(DeleteView):
     success_url = reverse_lazy("mailing:mailing_list")
 
 
-def home(request):
-    return render(request, 'mailing/base.html')
+def index(request):
+    mailings_all = MailingService.get_mailing()
+    mailings_active = MailingService.get_mailing_active()
+    client = MailingService.get_recipient()
+    context = {
+        'mailings_all': mailings_all,
+        'mailings_active': mailings_active,
+        'client': client
+    }
+    return render(request, 'mailing/index.html', context=context)

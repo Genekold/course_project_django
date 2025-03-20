@@ -10,7 +10,7 @@
             <a href="{% url 'mailing:message_detail' message.id %}" class="list-group-item list-group-item-action">
                 <div class="ms-2 me-auto">
                     <div class="fw-bold ">Тема сообщения: {{ message.subject }}</div>
-                    <div>Текст сообщения: {{ message.message }}</div>
+                    <div>Текст сообщения: {{ message.message|truncatewords:10 }}</div>
                 </div>
             </a>
         </li>
