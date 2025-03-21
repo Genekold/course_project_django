@@ -10,7 +10,7 @@ class MailingService:
 
     @staticmethod
     def send_mail(mailing_pk):
-        """метод для отправки сообщений"""
+        """Mетод для отправки сообщений"""
 
         mailing = Mailing.objects.filter(pk=mailing_pk).first()
         subject = mailing.message.subject

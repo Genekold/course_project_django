@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'django_extensions',
 
     'mailing',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -109,3 +110,8 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
+
+AUTH_USER_MODEL = 'users.User'
+
+LOGIN_REDIRECT_URL = 'mailing:index'
+LOGOUT_REDIRECT_URL = 'users:login'
