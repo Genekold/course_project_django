@@ -1,9 +1,10 @@
+from django.db.transaction import commit
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from mailing.forms import MailingRecipientForm, MessageForm, MailingForm
-from mailing.models import MailingRecipient, Message, Mailing
+from mailing.models import MailingRecipient, Message, Mailing, MailingAttempt
 from mailing.services import MailingService
 
 
@@ -105,6 +106,11 @@ class MailingCreateView(CreateView):
     form_class = MailingForm
     success_url = reverse_lazy("mailing:mailing_list")
 
+    def form_valid(self, form):
+        mailing = form.save(commit=False)
+        mailing.author = self.request.user
+        return super().form_valid(form)
+
 
 class MailingUpdateView(UpdateView):
     """Класс изменения рассылки"""
@@ -132,3 +138,7 @@ def index(request):
         'client': client
     }
     return render(request, 'mailing/index.html', context=context)
+
+def statistic_mailing(request, user_id):
+    mailing = Mailing.objects.filter(author=user_id)
+    pass

@@ -1,4 +1,7 @@
+from django.contrib.auth import get_user_model
 from django.db import models
+
+from users.models import User
 
 
 class MailingRecipient(models.Model):
@@ -50,6 +53,8 @@ class Mailing(models.Model):
     recipients = models.ManyToManyField(
         MailingRecipient, verbose_name="Получатели рассылки", related_name="recipients"
     )
+    author = models.ForeignKey(get_user_model(), verbose_name='Автор рассылки', default=None, blank=True, null=True,
+                               related_name='mailings', on_delete=models.SET_NULL)
 
     def __str__(self):
         """Строковое представление рассылки"""
@@ -77,4 +82,3 @@ class MailingAttempt(models.Model):
     class Meta:
         verbose_name = "Попытка рассылки"
         verbose_name_plural = "Попытки рассылки"
-
