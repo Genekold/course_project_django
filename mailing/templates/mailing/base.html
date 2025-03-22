@@ -225,7 +225,8 @@
 </svg>
 
 <header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="{% url 'mailing:index' %}">Сервис управления рассылками</a>
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="{% url 'mailing:index' %}">Сервис
+        управления рассылками</a>
 
     <ul class="navbar-nav flex-row d-md-none">
         <li class="nav-item text-nowrap">
@@ -267,12 +268,14 @@
                     <ul class="nav flex-column">
                         <li class="nav-item border-bottom text-dark ms-1">Клиенты</li>
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="{% url 'mailing:recipient_list' %}">
+                            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page"
+                               href="{% url 'mailing:recipient_list' %}">
                                 Все клиенты
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center gap-2" href="{% url 'mailing:recipient_create' %}">
+                            <a class="nav-link d-flex align-items-center gap-2"
+                               href="{% url 'mailing:recipient_create' %}">
                                 Добавить клиента
                             </a>
                         </li>
@@ -283,7 +286,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center gap-2" href="{% url 'mailing:message_create' %}">
+                            <a class="nav-link d-flex align-items-center gap-2"
+                               href="{% url 'mailing:message_create' %}">
                                 Добавить сообщение
                             </a>
                         </li>
@@ -294,7 +298,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center gap-2" href="{% url 'mailing:mailing_create' %}">
+                            <a class="nav-link d-flex align-items-center gap-2"
+                               href="{% url 'mailing:mailing_create' %}">
                                 Добавить рассылку
                             </a>
                         </li>
@@ -305,20 +310,33 @@
 
                     <ul class="nav flex-column mb-auto">
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center gap-2" href="#">
+                            {% if user.is_authenticated %}
+                            <a class="nav-link d-flex align-items-center gap-2" href="#">{{ user }}</a>
+                            <form method="POST" action="{% url 'users:logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn text-primary gap-2 nav-link d-flex">
+                                    <svg class="bi">
+                                        <use xlink:href="#door-closed"/>
+                                    </svg>
+                                    Выйти
+                                </button>
+                            </form>
+                            {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center gap-2" href="{% url 'users:register' %}">
                                 <svg class="bi">
                                     <use xlink:href="#gear-wide-connected"/>
                                 </svg>
                                 Регистрация
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center gap-2" href="#">
-                                <svg class="bi">
-                                    <use xlink:href="#door-closed"/>
-                                </svg>
-                                Войти
-                            </a>
+                        <a class="nav-link d-flex align-items-center gap-2" href="{% url 'users:login' %}">
+                            <svg class="bi">
+                                <use xlink:href="#door-closed"/>
+                            </svg>
+                            Вoйти
+                        </a>
+                        {% endif %}
                         </li>
                     </ul>
                 </div>

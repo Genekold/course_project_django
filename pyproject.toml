@@ -12,6 +12,7 @@ python-dotenv = "^1.0.1"
 psycopg2 = "^2.9.10"
 ipython = "^8.31.0"
 django-extensions = "^3.2.3"
+pillow = "^11.1.0"
 
 
 [tool.poetry.group.lint.dependencies]
