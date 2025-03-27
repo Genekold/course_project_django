@@ -1,0 +1,52 @@
+{% extends 'mailing/base.html' %}
+{% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Статистика по рассылке "{{ mailing }}"</h1>
+    </div>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h3>Количество сообщений отправленых по рассылке </h3>
+        <h1>{{ attempts.count }}</h1>
+    </div>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h3>Количество успешных попыток отправки: </h3>
+        <h1>{{ attempt_success.count }}</h1>
+    </div>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h3>Количество не успешных попыток отправки: </h3>
+        <h1>{{ attempt_not_success.count }}</h1>
+    </div>
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Подробная статистика</h1>
+    </div>
+
+
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Статус</th>
+      <th scope="col">Дата отпраки</th>
+      <th scope="col">Ответ сервера</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for attempt in attempts %}
+  {% if attempt.status == 'Успешно' %}
+    <tr>
+      <td>{{ attempt.status }}</td>
+      <td>{{ attempt.date_attempt }}</td>
+      <td>{{ attempt.server_response }}</td>
+    </tr>
+  {% else %}
+  <tr class="table-danger">
+      <td>{{ attempt.status }}</td>
+      <td>{{ attempt.date_attempt }}</td>
+      <td>{{ attempt.server_response }}</td>
+    </tr>
+  {% endif %}
+  {% endfor %}
+  </tbody>
+</table>
+</main>
+{% endblock %}

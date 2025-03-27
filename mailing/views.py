@@ -129,6 +129,8 @@ class MailingDeleteView(DeleteView):
 
 
 def index(request):
+    """Функция предтавления главной страницы"""
+
     mailings_all = MailingService.get_mailing()
     mailings_active = MailingService.get_mailing_active()
     client = MailingService.get_recipient()
@@ -139,6 +141,19 @@ def index(request):
     }
     return render(request, 'mailing/index.html', context=context)
 
-def statistic_mailing(request, user_id):
-    mailing = Mailing.objects.filter(author=user_id)
-    pass
+
+def statistic_mailing(request, mailing_id):
+    """Функция представления страницы статистики по рассылке"""
+
+    mailing = get_object_or_404(Mailing, pk=mailing_id)
+    attempts = MailingAttempt.objects.filter(mailing_id=mailing_id)
+    attempt_success = attempts.filter(status='Успешно')
+    attempt_not_success = attempts.filter(status='Не успешно')
+
+    context = {
+        'mailing': mailing,
+        'attempts': attempts,
+        'attempt_success': attempt_success,
+        'attempt_not_success': attempt_not_success,
+    }
+    return render(request, 'mailing/statistic.html', context=context)

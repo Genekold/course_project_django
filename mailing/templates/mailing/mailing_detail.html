@@ -2,7 +2,7 @@
 {% block content %}
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Рассылка</h1>
+        <h1 class="h2">Рассылка "{{ object }}"</h1>
     </div>
     <div class="row">
         <div class="col-5">
@@ -18,18 +18,38 @@
                         {% for recipient in recipients %}
                         <li class="list-group-item">{{ recipient }}</li>
                         {% endfor %}
-                        <a href="{% url 'mailing:mailing_update' object.id %}" class="btn btn-primary">Изменить
-                            данные</a>
-                        <a href="{% url 'mailing:mailing_delete' object.id %}" class="btn btn-danger">Удалить</a>
-                        <ul/>
+                    </ul>
                 </div>
                 <a href="{% url 'mailing:mailing_list' %}" class="list-group-item list-group-item-action">
                     <div class="card-footer text-muted">Вернуться к списку сообщений</div>
                 </a>
             </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">Действия с рассылкой</div>
+            </div>
+            <div class="card-body">
+                <ul class="list-group mt-2 ">
+                    <a href="{% url 'mailing:mailing_update' object.id %}" class="btn btn-primary">Изменить
+                        данные</a>
+                </ul>
+                <ul class="list-group mt-2 ">
+                    <form method="post">
+                        <a href="{% url 'mailing:mailing_update' object.id %}" class="btn btn-secondary">Отправить
+                        получателям</a>
+                    </form>
+                </ul>
+                <ul class="list-group mt-2 ">
+                    <a href="{% url 'mailing:mailing_statistic' object.id %}" class="btn btn-success">Посмотреть
+                        статистику</a>
+                </ul>
+                <ul class="list-group mt-2 ">
+                    <a href="{% url 'mailing:mailing_delete' object.id %}" class="btn btn-danger">Удалить</a>
+                </ul>
+            </div>
 
         </div>
-
     </div>
 </main>
 {% endblock %}
