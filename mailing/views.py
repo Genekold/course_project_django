@@ -157,3 +157,9 @@ def statistic_mailing(request, mailing_id):
         'attempt_not_success': attempt_not_success,
     }
     return render(request, 'mailing/statistic.html', context=context)
+
+
+def sehd_mail(request, mailing_id):
+    MailingService.send_mail(mailing_id)
+    return render(request, 'mailing/send_ok.html')
+

@@ -35,10 +35,8 @@
                         данные</a>
                 </ul>
                 <ul class="list-group mt-2 ">
-                    <form method="post">
-                        <a href="{% url 'mailing:mailing_update' object.id %}" class="btn btn-secondary">Отправить
+                    <a href="{% url 'mailing:send_ok' object.id %}" class="btn btn-secondary">Отправить
                         получателям</a>
-                    </form>
                 </ul>
                 <ul class="list-group mt-2 ">
                     <a href="{% url 'mailing:mailing_statistic' object.id %}" class="btn btn-success">Посмотреть

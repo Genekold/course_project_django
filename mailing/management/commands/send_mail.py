@@ -16,4 +16,3 @@ class Command(BaseCommand):
             return None
 
         MailingService.send_mail(mailing_pk)
-
