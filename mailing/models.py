@@ -12,6 +12,8 @@ class MailingRecipient(models.Model):
     )
     full_name = models.CharField(max_length=150, verbose_name="Ф.И.О. получателя")
     commentary = models.TextField(verbose_name="Комментарий о получателе рассылки", blank=True, null=True)
+    author = models.ForeignKey(get_user_model(), verbose_name='Автор рассылки', default=None, blank=True, null=True,
+                               related_name='recipients', on_delete=models.SET_NULL)
 
     def __str__(self):
         """Строковое представление получателя"""
