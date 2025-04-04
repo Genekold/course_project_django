@@ -6,7 +6,7 @@
     </div>
     <form class="row" method="post" enctype="multipart/form-data">
         <div class="card">
-            <p class="card-text">Действительно хотите удалить сообщение: {{ object.subject }}</p>
+            <p class="card-text">Действительно хотите удалить сообщение: {{ object }}</p>
             <div class="card-boby mt-3">
                 {% csrf_token %}
             </div>

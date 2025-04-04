@@ -273,36 +273,42 @@
                                 Все клиенты
                             </a>
                         </li>
+                        {% if perms.mailing.add_mailingrecipient %}
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center gap-2"
                                href="{% url 'mailing:recipient_create' %}">
                                 Добавить клиента
                             </a>
                         </li>
+                        {% endif %}
                         <li class="nav-item border-bottom text-dark mt-5 ms-1">Сообшения</li>
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center gap-2" href="{% url 'mailing:message_list' %}">
                                 Все сообщения
                             </a>
                         </li>
+                        {% if perms.mailing.add_message %}
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center gap-2"
                                href="{% url 'mailing:message_create' %}">
                                 Добавить сообщение
                             </a>
                         </li>
+                        {% endif %}
                         <li class="nav-item border-bottom text-dark mt-5 ms-1">Рассылки</li>
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center gap-2" href="{% url 'mailing:mailing_list' %}">
                                 Все рассылки
                             </a>
                         </li>
+                        {% if perms.mailing.add_mailing %}
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center gap-2"
                                href="{% url 'mailing:mailing_create' %}">
                                 Добавить рассылку
                             </a>
                         </li>
+                        {% endif %}
                     </ul>
 
 
@@ -330,6 +336,7 @@
                                 Регистрация
                             </a>
                         </li>
+                        <li class="nav-item">
                         <a class="nav-link d-flex align-items-center gap-2" href="{% url 'users:login' %}">
                             <svg class="bi">
                                 <use xlink:href="#door-closed"/>
