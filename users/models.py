@@ -19,6 +19,8 @@ class User(AbstractUser):
         verbose_name_plural = 'Пользователи'
         permissions = [
             ('can_view_statistic', 'can view statistic'),
+            ('can_send_mail', 'can sand mail'),
+            ('manager', 'manager'),
         ]
 
     def __str__(self):

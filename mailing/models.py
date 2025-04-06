@@ -1,8 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
-from users.models import User
-
 
 class MailingRecipient(models.Model):
     """Класс получателя рассылки"""

@@ -10,4 +10,3 @@ class Command(BaseCommand):
         call_command('loaddata', 'message_fixture.json')
         call_command('loaddata', 'mailing_fixture.json')
         self.stdout.write(self.style.SUCCESS('Данные загружены'))
-

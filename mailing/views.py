@@ -1,14 +1,14 @@
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.db.transaction import commit
 from django.http import HttpResponseForbidden
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from mailing.forms import MailingRecipientForm, MessageForm, MailingForm
 from mailing.models import MailingRecipient, Message, Mailing, MailingAttempt
 from mailing.services import MailingService
+from users.models import User
 
 
 class MailingRecipientListView(LoginRequiredMixin, ListView):
@@ -48,13 +48,6 @@ class MailingRecipientCreateView(LoginRequiredMixin, PermissionRequiredMixin, Cr
     form_class = MailingRecipientForm
     success_url = reverse_lazy("mailing:recipient_list")
     permission_required = 'mailing.add_mailingrecipient'
-
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if self.object.author != self.request.user:
-            return HttpResponseForbidden('У вас нет прав для просмотра этой страницы')
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
 
     def form_valid(self, form):
         recipient = form.save(commit=False)
@@ -176,13 +169,6 @@ class MailingCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
     success_url = reverse_lazy("mailing:mailing_list")
     permission_required = 'mailing.add_mailing'
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if self.object.author != self.request.user:
-            return HttpResponseForbidden('У вас нет прав для просмотра этой страницы')
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
-
     def form_valid(self, form):
         mailing = form.save(commit=False)
         mailing.author = self.request.user
@@ -234,11 +220,14 @@ def index(request):
     }
     return render(request, 'mailing/index.html', context=context)
 
+
 @permission_required('users.can_view_statistic', raise_exception=True)
 def statistic_mailing(request, mailing_id):
     """Функция представления страницы статистики по рассылке"""
 
     mailing = get_object_or_404(Mailing, pk=mailing_id)
+    if mailing.author != request.user:
+        return HttpResponseForbidden('У вас нет прав для просмотра этой страницы')
     attempts = MailingAttempt.objects.filter(mailing_id=mailing_id)
     attempt_success = attempts.filter(status='Успешно')
     attempt_not_success = attempts.filter(status='Не успешно')
@@ -252,6 +241,32 @@ def statistic_mailing(request, mailing_id):
     return render(request, 'mailing/statistic.html', context=context)
 
 
-def sehd_mail(request, mailing_id):
+@permission_required('users.can_send_mail', raise_exception=True)
+def send_mail(request, mailing_id):
+    """Функция отправки сообщения"""
     MailingService.send_mail(mailing_id)
     return render(request, 'mailing/send_ok.html')
+
+
+class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    """Класс представления рассылки"""
+    model = User
+    permission_required = 'users.manager'
+    template_name = 'mailing/user_list.html'
+    context_object_name = 'users'
+
+
+@permission_required('users.manager', raise_exception=True)
+def user_blocking(request, user_id):
+    user = User.objects.get(pk=user_id)
+    user.is_active = False
+    user.save()
+    return render(request, 'mailing/user_block.html', {'user': user})
+
+
+@permission_required('users.manager', raise_exception=True)
+def user_unblocking(request, user_id):
+    user = User.objects.get(pk=user_id)
+    user.is_active = True
+    user.save()
+    return render(request, 'mailing/user_unblock.html', {'user': user})
