@@ -2,11 +2,11 @@
 {% block content %}
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h3>Пользователь "{{ user }}" заблокирован!</h3>
+        <h3>Рассылка "{{ mailing }}" остановлена!</h3>
     </div>
 
     <div>
-        <a href="{% url 'mailing:user_list' %}" class="btn btn-primary">Вернуться к пользователям</a>
+        <a href="{% url 'mailing:mailing_list' %}" class="btn btn-primary">Вернуться к рассылкам</a>
     </div>
 </main>
 {% endblock %}

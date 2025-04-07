@@ -270,3 +270,19 @@ def user_unblocking(request, user_id):
     user.is_active = True
     user.save()
     return render(request, 'mailing/user_unblock.html', {'user': user})
+
+
+@permission_required('users.manager', raise_exception=True)
+def mailing_blocking(request, mailing_id):
+    mailing = Mailing.objects.get(pk=mailing_id)
+    mailing.status = "Завершена"
+    mailing.save()
+    return render(request, 'mailing/mailing_block.html', {'mailing': mailing})
+
+
+@permission_required('users.manager', raise_exception=True)
+def mailing_unblocking(request, mailing_id):
+    mailing = Mailing.objects.get(pk=mailing_id)
+    mailing.status = "Запущена"
+    mailing.save()
+    return render(request, 'mailing/mailing_unblock.html', {'mailing': mailing})
