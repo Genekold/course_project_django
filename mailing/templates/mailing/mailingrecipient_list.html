@@ -14,6 +14,9 @@
                 <div class="ms-2 me-auto">
                     <div class="fw-bold">{{ recipient.email }}</div>
                     <div>{{ recipient.full_name }}</div>
+                    {% if perms.mailing.manager %}
+                    <div>Пользователь: {{ recipient.author }}</div>
+                    {% endif %}
                 </div>
                 <span class="badge bg-primary rounded-pill text-end">Количество рассылок: {% get_mailing recipient.pk %}</span>
             </a>
