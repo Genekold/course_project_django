@@ -116,3 +116,10 @@ AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = 'mailing:index'
 LOGOUT_REDIRECT_URL = 'users:login'
 LOGIN_URL = 'users:login'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': os.getenv('LOCATION')
+    }
+}

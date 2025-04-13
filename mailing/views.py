@@ -1,8 +1,11 @@
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.cache import cache
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from mailing.forms import MailingRecipientForm, MessageForm, MailingForm
@@ -11,17 +14,22 @@ from mailing.services import MailingService
 from users.models import User
 
 
-class MailingRecipientListView(LoginRequiredMixin, ListView):
+class MailingRecipientListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     """Класс представления списка получателей"""
     model = MailingRecipient
+    permission_required = 'mailing.view_mailingrecipient'
 
     def get_queryset(self):
-        qs = super().get_queryset()
+        qs = cache.get('qs_recipient')
+        if not qs:
+            qs = super().get_queryset()
+            # cache.set('qs_recipient', qs, 60 * 5)
         if self.request.user.groups.filter(name="manager").exists():
             return qs
         return qs.filter(author=self.request.user)
 
 
+# @method_decorator(cache_page(60 * 5), name='dispatch')
 class MailingRecipientDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     """Класс детального представления одного получателя"""
     model = MailingRecipient
@@ -87,11 +95,20 @@ class MailingRecipientDeleteView(LoginRequiredMixin, PermissionRequiredMixin, De
         return self.render_to_response(context)
 
 
+# @method_decorator(cache_page(60 * 5), name='dispatch')
 class MessageListView(ListView):
     """Класс представления сообщения"""
     model = Message
 
+    def get_queryset(self):
+        qs = cache.get('qs_message')
+        if not qs:
+            qs = super().get_queryset()
+            # cache.set('qs_message', qs, 60 * 5)
+        return qs
 
+
+# @method_decorator(cache_page(60 * 5), name='dispatch')
 class MessageDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     """Класс детального представления сообщения"""
     model = Message
@@ -135,12 +152,16 @@ class MailingListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     permission_required = 'mailing.view_mailing'
 
     def get_queryset(self):
-        qs = super().get_queryset()
+        qs = cache.get('qs_mailing')
+        if not qs:
+            qs = super().get_queryset()
+            # cache.set('qs_mailing', qs, 60 * 5)
         if self.request.user.groups.filter(name="manager").exists():
             return qs
         return qs.filter(author=self.request.user)
 
 
+# @method_decorator(cache_page(60 * 5), name='dispatch')
 class MailingDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     """Класс детального представления рассылки"""
     model = Mailing
@@ -221,7 +242,7 @@ def index(request):
     return render(request, 'mailing/index.html', context=context)
 
 
-@permission_required('users.can_view_statistic', raise_exception=True)
+@permission_required('mailing.can_view_statistic', raise_exception=True)
 def statistic_mailing(request, mailing_id):
     """Функция представления страницы статистики по рассылке"""
 
@@ -249,15 +270,20 @@ def send_mail(request, mailing_id):
 
 
 class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
-    """Класс представления рассылки"""
+    """Класс представления списка пользователей"""
     model = User
     permission_required = 'users.manager'
     template_name = 'mailing/user_list.html'
     context_object_name = 'users'
 
+    def get_queryset(self):
+        qs = User.objects.exclude(groups__name='manager')
+        return qs
+
 
 @permission_required('users.manager', raise_exception=True)
 def user_blocking(request, user_id):
+    """Функция блокировки пользователя"""
     user = User.objects.get(pk=user_id)
     user.is_active = False
     user.save()
@@ -266,22 +292,25 @@ def user_blocking(request, user_id):
 
 @permission_required('users.manager', raise_exception=True)
 def user_unblocking(request, user_id):
+    """Функция деблокировки пользователя"""
     user = User.objects.get(pk=user_id)
     user.is_active = True
     user.save()
     return render(request, 'mailing/user_unblock.html', {'user': user})
 
 
-@permission_required('users.manager', raise_exception=True)
+@permission_required('mailing.can_block_mailing', raise_exception=True)
 def mailing_blocking(request, mailing_id):
+    """Функция завершения рассылки"""
     mailing = Mailing.objects.get(pk=mailing_id)
     mailing.status = "Завершена"
     mailing.save()
     return render(request, 'mailing/mailing_block.html', {'mailing': mailing})
 
 
-@permission_required('users.manager', raise_exception=True)
+@permission_required('mailing.can_block_mailing', raise_exception=True)
 def mailing_unblocking(request, mailing_id):
+    """Функция продления рассылки"""
     mailing = Mailing.objects.get(pk=mailing_id)
     mailing.status = "Запущена"
     mailing.save()
