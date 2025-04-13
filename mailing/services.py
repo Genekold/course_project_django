@@ -1,3 +1,4 @@
+import datetime
 import smtplib
 
 from django.core.cache import cache
@@ -8,12 +9,18 @@ from .models import Mailing, MailingRecipient, MailingAttempt
 
 
 class MailingService:
+    @staticmethod
+    def possibility_of_sending(mailing):
+        date_now = datetime.datetime.now()
+        pass
+
 
     @staticmethod
     def send_mail(mailing_pk):
         """Mетод для отправки сообщений"""
 
-        mailing = Mailing.objects.filter(pk=mailing_pk).first()
+        mailing = Mailing.objects.get(pk=mailing_pk)
+
         subject = mailing.message.subject
         text = mailing.message.message
         recipients = [rec.email for rec in mailing.recipients.all()]

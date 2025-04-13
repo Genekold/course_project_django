@@ -5,7 +5,7 @@ from django.db import models
 class MailingRecipient(models.Model):
     """Класс получателя рассылки"""
 
-    email = models.EmailField(verbose_name="email получателя рассылки"    )
+    email = models.EmailField(verbose_name="email получателя рассылки")
     full_name = models.CharField(max_length=150, verbose_name="Ф.И.О. получателя")
     commentary = models.TextField(verbose_name="Комментарий о получателе рассылки", blank=True, null=True)
     author = models.ForeignKey(get_user_model(), verbose_name='Автор рассылки', default=None, blank=True, null=True,
@@ -67,7 +67,6 @@ class Mailing(models.Model):
         ordering = ["status"]
         permissions = [
             ('can_view_statistic', 'can view statistic'),
-            ('can_view_all_mailing', 'can view all mailing'),
             ('can_block_mailing', 'can block mailing'),
         ]
 
