@@ -13,18 +13,21 @@ class StyleForm:
 
 
 class MailingRecipientForm(StyleForm, ModelForm):
+    """Форма для добавления клиента для рассылки"""
     class Meta:
         model = MailingRecipient
-        fields = "__all__"
+        exclude = ['author',]
 
 
 class MessageForm(StyleForm, ModelForm):
+    """Форма для добавления сообщения"""
     class Meta:
         model = Message
         fields = "__all__"
 
 
 class MailingForm(StyleForm, ModelForm):
+    """Форма для добавления рассылки"""
     class Meta:
         model = Mailing
         fields = ['start_date', 'end_date', 'message', 'recipients']

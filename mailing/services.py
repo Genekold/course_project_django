@@ -3,7 +3,7 @@ import smtplib
 from django.core.mail import send_mail
 
 from config.settings import DEFAULT_FROM_EMAIL
-from .models import Mailing, MailingRecipient, MailingAttempt, Message
+from .models import Mailing, MailingRecipient, MailingAttempt
 
 
 class MailingService:

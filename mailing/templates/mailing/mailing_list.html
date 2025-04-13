@@ -7,12 +7,27 @@
     <ol class="list-group list-group-numbered">
         {% for mailing in object_list %}
         <li class="list-group-item d-flex justify-content-between align-items-start">
+            {% if not perms.users.manager %}
             <a href="{% url 'mailing:mailing_detail' mailing.id %}" class="list-group-item list-group-item-action">
+                {% endif %}
                 <div class="ms-2 me-auto">
                     <div class="fw-bold ">Статус рассылки: {{ mailing.status }}</div>
                     <div>Тема сообщения из рассылки: {{ mailing.message }}</div>
+                    {% if perms.users.manager %}
                     <div>Автор рассылки: {{ mailing.author }}</div>
+                    {% endif %}
                 </div>
+                {% if perms.users.manager %}
+                {% if mailing.status == "Запущена" or mailing.status == "Создана" %}
+                <a href="{% url 'mailing:mailing_blocking' mailing.id %}">
+                    <button class="btn btn-danger" type="submit">Отключить рассылку</button>
+                </a>
+                {% else %}
+                <a href="{% url 'mailing:mailing_unblocking' mailing.id %}">
+                    <button class="btn btn-primary" type="submit">Включить рассылку</button>
+                </a>
+                {% endif %}
+                {% endif %}
             </a>
         </li>
         {% endfor %}

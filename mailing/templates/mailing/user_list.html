@@ -1,0 +1,28 @@
+{% extends 'mailing/base.html' %}
+{% load mailing_tags %}
+{% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Список пользователей</h1>
+    </div>
+    <ol class="list-group list-group-numbered">
+        {% for user in users %}
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+                <div class="fw-bold">{{ user }}</div>
+            </div>
+            {% if user.is_active %}
+            <a href="{% url 'mailing:user_blocking' user.id %}">
+                <button class="btn btn-danger" type="submit">Заблокиpовать</button>
+            </a>
+            {% else %}
+            <a href="{% url 'mailing:user_unblocking' user.id %}">
+                <button class="btn btn-primary" type="submit">Разблокиpовать</button>
+            </a>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ol>
+</main>
+
+{% endblock %}
