@@ -27,7 +27,7 @@ class MessageForm(StyleForm, ModelForm):
 class MailingForm(StyleForm, ModelForm):
     class Meta:
         model = Mailing
-        fields = "__all__"
+        fields = ['start_date', 'end_date', 'message', 'recipients']
         widgets = {
             'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local'})

@@ -1,9 +1,10 @@
+from django.db.transaction import commit
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from mailing.forms import MailingRecipientForm, MessageForm, MailingForm
-from mailing.models import MailingRecipient, Message, Mailing
+from mailing.models import MailingRecipient, Message, Mailing, MailingAttempt
 from mailing.services import MailingService
 
 
@@ -105,6 +106,11 @@ class MailingCreateView(CreateView):
     form_class = MailingForm
     success_url = reverse_lazy("mailing:mailing_list")
 
+    def form_valid(self, form):
+        mailing = form.save(commit=False)
+        mailing.author = self.request.user
+        return super().form_valid(form)
+
 
 class MailingUpdateView(UpdateView):
     """Класс изменения рассылки"""
@@ -123,6 +129,8 @@ class MailingDeleteView(DeleteView):
 
 
 def index(request):
+    """Функция предтавления главной страницы"""
+
     mailings_all = MailingService.get_mailing()
     mailings_active = MailingService.get_mailing_active()
     client = MailingService.get_recipient()
@@ -132,3 +140,26 @@ def index(request):
         'client': client
     }
     return render(request, 'mailing/index.html', context=context)
+
+
+def statistic_mailing(request, mailing_id):
+    """Функция представления страницы статистики по рассылке"""
+
+    mailing = get_object_or_404(Mailing, pk=mailing_id)
+    attempts = MailingAttempt.objects.filter(mailing_id=mailing_id)
+    attempt_success = attempts.filter(status='Успешно')
+    attempt_not_success = attempts.filter(status='Не успешно')
+
+    context = {
+        'mailing': mailing,
+        'attempts': attempts,
+        'attempt_success': attempt_success,
+        'attempt_not_success': attempt_not_success,
+    }
+    return render(request, 'mailing/statistic.html', context=context)
+
+
+def sehd_mail(request, mailing_id):
+    MailingService.send_mail(mailing_id)
+    return render(request, 'mailing/send_ok.html')
+
