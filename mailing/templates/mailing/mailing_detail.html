@@ -14,6 +14,9 @@
                     <p class="card-text">Тема сообщнеия: {{ object.message }}.</p>
                     <p class="card-text">Всего получателей: {{ object.recipients.count }}.</p>
                     <p class="card-text">Получатели раcсыки:</p>
+                    <ul class="list-group mt-2 ">
+                        <a href="{% url 'mailing:add_recipient' object.id %}" class="btn btn-warning">Добавить получателей</a>
+                    </ul>
                     <ul class="list-group">
                         {% for recipient in recipients %}
                         <li class="list-group-item">{{ recipient }}</li>
@@ -27,7 +30,7 @@
         </div>
         <div class="col-4">
             <div class="card">
-                <div class="card-header">Действия с рассылкой: </div>
+                <div class="card-header">Действия с рассылкой:</div>
             </div>
             <div class="card-body">
                 <ul class="list-group mt-2 ">
@@ -46,8 +49,8 @@
                     <a href="{% url 'mailing:mailing_delete' object.id %}" class="btn btn-danger">Удалить</a>
                 </ul>
                 <div class="card mt-2 ">
-                <div class="card-header">Текст сообщения: </div>
-            </div >
+                    <div class="card-header">Текст сообщения:</div>
+                </div>
                 <ul class="list-group mt-2 ">
                     <p>{{ object.message.message }}</p>
                 </ul>

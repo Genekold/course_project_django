@@ -9,10 +9,15 @@ from .models import Mailing, MailingRecipient, MailingAttempt
 
 
 class MailingService:
+
     @staticmethod
-    def possibility_of_sending(mailing):
-        date_now = datetime.datetime.now()
-        pass
+    def data_update():
+        """Обновление данных в базе данных в зависимости от даты окончания рассылки """
+        mailings = Mailing.objects.all()
+        for mailing in mailings:
+            if mailing.end_date.replace(tzinfo=None) < datetime.datetime.now():
+                mailing.status = 'Завершена'
+                mailing.save()
 
 
     @staticmethod
@@ -20,7 +25,6 @@ class MailingService:
         """Mетод для отправки сообщений"""
 
         mailing = Mailing.objects.get(pk=mailing_pk)
-
         subject = mailing.message.subject
         text = mailing.message.message
         recipients = [rec.email for rec in mailing.recipients.all()]
@@ -45,7 +49,6 @@ class MailingService:
         mailings_all = cache.get('mailings_all')
         if not mailings_all:
             mailings_all = Mailing.objects.all()
-            cache.set('mailings_all', mailings_all, 60 * 5)
         return mailings_all
 
     @staticmethod
@@ -55,7 +58,6 @@ class MailingService:
         mailings_active = cache.get('mailings_active')
         if not mailings_active:
             mailings_active = Mailing.objects.filter(status='Запущена')
-            cache.set('mailings_active', mailings_active, 60 * 5)
         return mailings_active
 
     @staticmethod
@@ -65,5 +67,4 @@ class MailingService:
         client = cache.get('clients')
         if not client:
             client = MailingRecipient.objects.values('email').distinct()
-            cache.set('clients', client, 60 * 5)
         return client

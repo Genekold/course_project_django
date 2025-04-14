@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.cache import cache
@@ -8,7 +10,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from mailing.forms import MailingRecipientForm, MessageForm, MailingForm
+from mailing.forms import MailingRecipientForm, MessageForm, MailingForm, MailingFormUpdate, MailingAddRecipientForm
 from mailing.models import MailingRecipient, Message, Mailing, MailingAttempt
 from mailing.services import MailingService
 from users.models import User
@@ -23,13 +25,13 @@ class MailingRecipientListView(LoginRequiredMixin, PermissionRequiredMixin, List
         qs = cache.get('qs_recipient')
         if not qs:
             qs = super().get_queryset()
-            # cache.set('qs_recipient', qs, 60 * 5)
+            cache.set('qs_recipient', qs, 60 * 5)
         if self.request.user.groups.filter(name="manager").exists():
             return qs
         return qs.filter(author=self.request.user)
 
 
-# @method_decorator(cache_page(60 * 5), name='dispatch')
+@method_decorator(cache_page(60 * 5), name='dispatch')
 class MailingRecipientDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     """Класс детального представления одного получателя"""
     model = MailingRecipient
@@ -95,20 +97,19 @@ class MailingRecipientDeleteView(LoginRequiredMixin, PermissionRequiredMixin, De
         return self.render_to_response(context)
 
 
-# @method_decorator(cache_page(60 * 5), name='dispatch')
 class MessageListView(ListView):
-    """Класс представления сообщения"""
+    """Класс представления сообщений"""
     model = Message
 
     def get_queryset(self):
         qs = cache.get('qs_message')
         if not qs:
             qs = super().get_queryset()
-            # cache.set('qs_message', qs, 60 * 5)
+            cache.set('qs_message', qs, 60 * 5)
         return qs
 
 
-# @method_decorator(cache_page(60 * 5), name='dispatch')
+@method_decorator(cache_page(60 * 5), name='dispatch')
 class MessageDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     """Класс детального представления сообщения"""
     model = Message
@@ -147,15 +148,16 @@ class MessageDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView)
 
 
 class MailingListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
-    """Класс представления рассылки"""
+    """Класс представления списка рассылок"""
     model = Mailing
     permission_required = 'mailing.view_mailing'
 
     def get_queryset(self):
+        MailingService.data_update()
         qs = cache.get('qs_mailing')
         if not qs:
             qs = super().get_queryset()
-            # cache.set('qs_mailing', qs, 60 * 5)
+            cache.set('qs_mailing', qs, 60 * 5)
         if self.request.user.groups.filter(name="manager").exists():
             return qs
         return qs.filter(author=self.request.user)
@@ -199,7 +201,7 @@ class MailingCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
 class MailingUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     """Класс изменения рассылки"""
     model = Mailing
-    form_class = MailingForm
+    form_class = MailingFormUpdate
     success_url = reverse_lazy("mailing:mailing_list")
     permission_required = 'mailing.change_mailing'
 
@@ -212,6 +214,22 @@ class MailingUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
 
     def get_success_url(self):
         return reverse("mailing:mailing_detail", args=[self.kwargs.get('pk')])
+
+
+class MailingAddRecipient(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    """Класс добавления получателей в рассылку"""
+    model = Mailing
+    template_name = 'mailing/add_recipient_form.html'
+    form_class = MailingAddRecipientForm
+    success_url = reverse_lazy("mailing:mailing_list")
+    permission_required = 'mailing.change_mailing'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.author != self.request.user:
+            return HttpResponseForbidden('У вас нет прав для просмотра этой страницы')
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)
 
 
 class MailingDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
@@ -265,7 +283,17 @@ def statistic_mailing(request, mailing_id):
 @permission_required('users.can_send_mail', raise_exception=True)
 def send_mail(request, mailing_id):
     """Функция отправки сообщения"""
-    MailingService.send_mail(mailing_id)
+    mailing = Mailing.objects.get(pk=mailing_id)
+    end_date = mailing.end_date.replace(tzinfo=None)
+    date_now = datetime.datetime.now()
+    if date_now > end_date:
+        return render(request, 'mailing/send_ban.html')
+    else:
+        if mailing.start_date is None:
+            mailing.start_date = date_now
+            mailing.status = 'Запущена'
+            mailing.save()
+        MailingService.send_mail(mailing_id)
     return render(request, 'mailing/send_ok.html')
 
 

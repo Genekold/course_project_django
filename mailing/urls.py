@@ -3,7 +3,7 @@ from mailing.views import MailingRecipientListView, MailingRecipientDetailView, 
     MailingRecipientUpdateView, MailingRecipientDeleteView, MessageListView, MessageDetailView, MessageCreateView, \
     MessageUpdateView, MessageDeleteView, MailingListView, MailingDetailView, MailingCreateView, MailingDeleteView, \
     MailingUpdateView, index, statistic_mailing, send_mail, UserListView, user_blocking, user_unblocking, \
-    mailing_blocking, mailing_unblocking
+    mailing_blocking, mailing_unblocking, MailingAddRecipient
 from mailing.apps import MailingConfig
 
 app_name = MailingConfig.name
@@ -27,6 +27,7 @@ urlpatterns = [
     path("mailing/<int:pk>/", MailingDetailView.as_view(), name="mailing_detail"),
     path("mailing/create/", MailingCreateView.as_view(), name="mailing_create"),
     path("mailing/<int:pk>/update/", MailingUpdateView.as_view(), name="mailing_update"),
+    path("mailing/<int:pk>/add_recipient/", MailingAddRecipient.as_view(), name="add_recipient"),
     path("mailing/<int:pk>/delete/", MailingDeleteView.as_view(), name="mailing_delete"),
     path("mailing/statistic/<int:mailing_id>/", statistic_mailing, name="mailing_statistic"),
     path("mailing/send_ok/<int:mailing_id>/", send_mail, name="send_ok"),
