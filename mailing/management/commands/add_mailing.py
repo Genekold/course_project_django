@@ -41,7 +41,6 @@ class Command(BaseCommand):
         can_view_statistic = Permission.objects.get(codename='can_view_statistic')
         can_send_mail = Permission.objects.get(codename='can_send_mail')
 
-
         user_group.permissions.add(add_mailing, change_mailing, delete_mailing, view_mailing, add_message,
                                    change_message, delete_message, view_message, add_mailingrecipient,
                                    change_mailingrecipient, delete_mailingrecipient, view_mailingrecipient,
@@ -54,10 +53,8 @@ class Command(BaseCommand):
         user2.groups.add(user_group)
         moder.groups.add(manager_group)
 
-
-
-        # call_command('loaddata', 'mailingrecipient_fixture.json')
-        # call_command('loaddata', 'message_fixture.json')
-        # call_command('loaddata', 'mailing_fixture.json')
+        call_command('loaddata', 'mailingrecipient_fixture.json')
+        call_command('loaddata', 'message_fixture.json')
+        call_command('loaddata', 'mailing_fixture.json')
 
         self.stdout.write(self.style.SUCCESS('Данные загружены'))
