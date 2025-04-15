@@ -312,7 +312,7 @@
                     </ul>
                     <hr class="my-3">
                     <ul class="nav flex-column mb-auto">
-                        {% if perms.users.manager %}
+                        {% if perms.users.moderator %}
                         <li class="nav-item border-bottom">
                             <a href="{% url 'mailing:user_list' %}">
                                 <button class="btn btn-warning">

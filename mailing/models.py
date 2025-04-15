@@ -52,7 +52,7 @@ class Mailing(models.Model):
     )
     message = models.ForeignKey(Message, verbose_name="сообщение", on_delete=models.CASCADE, related_name="mailings")
     recipients = models.ManyToManyField(
-        MailingRecipient, verbose_name="Получатели рассылки", related_name="recipients"
+        MailingRecipient, verbose_name="Получатели рассылки", related_name="recipients", blank=True, null=True
     )
     author = models.ForeignKey(get_user_model(), verbose_name='Автор рассылки', default=None, blank=True, null=True,
                                related_name='mailings', on_delete=models.SET_NULL)

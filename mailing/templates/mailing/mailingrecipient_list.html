@@ -8,13 +8,13 @@
     <ol class="list-group list-group-numbered">
         {% for recipient in object_list %}
         <li class="list-group-item d-flex justify-content-between align-items-start">
-            {% if not perms.users.manager %}
+            {% if not perms.users.moderator %}
             <a href="{% url 'mailing:recipient_detail' recipient.id %}" class="list-group-item list-group-item-action">
                 {% endif %}
                 <div class="ms-2 me-auto">
                     <div class="fw-bold">{{ recipient.email }}</div>
                     <div>{{ recipient.full_name }}</div>
-                    {% if perms.mailing.manager %}
+                    {% if perms.mailing.moderator %}
                     <div>Пользователь: {{ recipient.author }}</div>
                     {% endif %}
                 </div>
