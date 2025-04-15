@@ -7,6 +7,7 @@ from mailing.models import MailingRecipient, Message, Mailing
 
 
 class StyleForm:
+    """Класс для наследования стилизации форм"""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
@@ -31,8 +32,41 @@ class MailingForm(StyleForm, ModelForm):
     """Форма для добавления рассылки"""
     class Meta:
         model = Mailing
-        fields = ['start_date', 'end_date', 'message', 'recipients']
+        fields = ['end_date', 'message']
         widgets = {
-            'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local'})
         }
+
+
+class MailingFormUpdate(StyleForm, ModelForm):
+    """Форма для изменения рассылки рассылки"""
+
+    class Meta:
+        model = Mailing
+        fields = ['end_date', 'message', 'recipients']
+        widgets = {
+            'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        }
+
+    def __init__(self, *args, **kwargs):
+        mailing = kwargs.get('instance', None)
+        author = mailing.author
+        super().__init__(*args, **kwargs)
+
+        if mailing:
+            self.fields['recipients'].queryset = MailingRecipient.objects.filter(author=author)
+
+
+class MailingAddRecipientForm(StyleForm, ModelForm):
+    """Форма для добавления в рссылку получателей"""
+    class Meta:
+        model = Mailing
+        fields = ['recipients',]
+
+    def __init__(self, *args, **kwargs):
+        mailing = kwargs.get('instance', None)
+        author = mailing.author
+        super().__init__(*args, **kwargs)
+
+        if mailing:
+            self.fields['recipients'].queryset = MailingRecipient.objects.filter(author=author)

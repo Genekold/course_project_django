@@ -45,7 +45,7 @@ class Mailing(models.Model):
 
     STATUS_CHOICES = [("Создана", "Создана"), ("Запущена", "Запущена"), ("Завершена", "Завершена")]
 
-    start_date = models.DateTimeField(verbose_name="Дата и время первой рассылки")
+    start_date = models.DateTimeField(verbose_name="Дата и время первой рассылки", blank=True, null=True, default=None)
     end_date = models.DateTimeField(verbose_name="Дата и время окончания рассылки")
     status = models.CharField(
         max_length=9, verbose_name="Статус рассылки", blank=True, null=True, choices=STATUS_CHOICES, default="Создана"
