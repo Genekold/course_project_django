@@ -3,6 +3,7 @@ import datetime
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.cache import cache
+from django.db.models import Q
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
@@ -300,16 +301,16 @@ def send_mail(request, mailing_id):
 class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     """Класс представления списка пользователей"""
     model = User
-    permission_required = 'users.manager'
+    permission_required = 'users.moderator'
     template_name = 'mailing/user_list.html'
     context_object_name = 'users'
 
     def get_queryset(self):
-        qs = User.objects.exclude(groups__name='manager')
+        qs = User.objects.exclude(Q(groups__name='manager') | Q(is_superuser=True))
         return qs
 
 
-@permission_required('users.manager', raise_exception=True)
+@permission_required('users.moderator', raise_exception=True)
 def user_blocking(request, user_id):
     """Функция блокировки пользователя"""
     user = User.objects.get(pk=user_id)
@@ -318,7 +319,7 @@ def user_blocking(request, user_id):
     return render(request, 'mailing/user_block.html', {'user': user})
 
 
-@permission_required('users.manager', raise_exception=True)
+@permission_required('users.moderator', raise_exception=True)
 def user_unblocking(request, user_id):
     """Функция деблокировки пользователя"""
     user = User.objects.get(pk=user_id)
