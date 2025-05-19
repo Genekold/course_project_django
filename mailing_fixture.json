@@ -1,0 +1,135 @@
+[
+  {
+    "model": "mailing.mailing",
+    "pk": 1,
+    "fields": {
+      "start_date": "2025-04-14T07:23:52Z",
+      "end_date": "2025-05-01T07:10:00Z",
+      "status": "��������",
+      "message": 4,
+      "author": 68,
+      "recipients": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "mailing.mailing",
+    "pk": 2,
+    "fields": {
+      "start_date": "2025-04-15T19:17:57.582Z",
+      "end_date": "2025-04-24T07:00:00Z",
+      "status": "��������",
+      "message": 6,
+      "author": 68,
+      "recipients": [
+        6,
+        8,
+        9,
+        4
+      ]
+    }
+  },
+  {
+    "model": "mailing.mailing",
+    "pk": 3,
+    "fields": {
+      "start_date": null,
+      "end_date": "2025-04-12T06:58:00Z",
+      "status": "���������",
+      "message": 1,
+      "author": 68,
+      "recipients": [
+        8
+      ]
+    }
+  },
+  {
+    "model": "mailing.mailing",
+    "pk": 4,
+    "fields": {
+      "start_date": "2025-04-15T19:15:44.322Z",
+      "end_date": "2025-05-29T07:00:00Z",
+      "status": "��������",
+      "message": 5,
+      "author": 68,
+      "recipients": [
+        6
+      ]
+    }
+  },
+  {
+    "model": "mailing.mailing",
+    "pk": 5,
+    "fields": {
+      "start_date": "2025-04-14T07:22:57Z",
+      "end_date": "2025-07-24T07:00:00Z",
+      "status": "��������",
+      "message": 2,
+      "author": 69,
+      "recipients": []
+    }
+  },
+  {
+    "model": "mailing.mailing",
+    "pk": 6,
+    "fields": {
+      "start_date": "2025-04-15T19:15:24.325Z",
+      "end_date": "2025-04-25T07:00:00Z",
+      "status": "��������",
+      "message": 3,
+      "author": 68,
+      "recipients": []
+    }
+  },
+  {
+    "model": "mailing.mailing",
+    "pk": 8,
+    "fields": {
+      "start_date": null,
+      "end_date": "2025-04-24T12:13:00Z",
+      "status": "�������",
+      "message": 3,
+      "author": 69,
+      "recipients": []
+    }
+  },
+  {
+    "model": "mailing.mailing",
+    "pk": 11,
+    "fields": {
+      "start_date": null,
+      "end_date": "2025-04-23T17:01:00Z",
+      "status": "��������",
+      "message": 2,
+      "author": 69,
+      "recipients": []
+    }
+  },
+  {
+    "model": "mailing.mailing",
+    "pk": 12,
+    "fields": {
+      "start_date": null,
+      "end_date": "2025-04-13T12:08:00Z",
+      "status": "���������",
+      "message": 3,
+      "author": 69,
+      "recipients": []
+    }
+  },
+  {
+    "model": "mailing.mailing",
+    "pk": 13,
+    "fields": {
+      "start_date": null,
+      "end_date": "2025-04-03T07:19:00Z",
+      "status": "���������",
+      "message": 4,
+      "author": 68,
+      "recipients": [
+        6
+      ]
+    }
+  }
+]

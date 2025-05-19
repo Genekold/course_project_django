@@ -1,0 +1,19 @@
+{% extends 'mailing/base.html' %}
+{% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Сообщение</h1>
+    </div>
+    <div class="card">
+        <div class="card-header">{{ object.subject }}</div>
+        <div class="card-body">
+            <p class="card-text">{{ object.message }}.</p>
+            <a href="{% url 'mailing:message_update' object.id %}" class="btn btn-primary">Изменить данные</a>
+            <a href="{% url 'mailing:message_delete' object.id %}" class="btn btn-danger">Удалить</a>
+        </div>
+        <a href="{% url 'mailing:message_list' %}" class="list-group-item list-group-item-action">
+            <div class="card-footer text-muted">Вернуться к списку сообщений</div>
+        </a>
+    </div>
+</main>
+{% endblock %}

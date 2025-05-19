@@ -1,0 +1,17 @@
+{% extends 'mailing/base.html' %}
+{% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h3>Количество рассылок на сайте: </h3>
+        <h1>{{ mailings_all.count }}</h1>
+    </div>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h3>Количество активных рассылок (со статусом "Запущена"): </h3>
+        <h1>{{ mailings_active.count }}</h1>
+    </div>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h3>Количество уникальных получателей на сайте: </h3>
+        <h1>{{ client.count }}</h1>
+    </div>
+</main>
+{% endblock %}
